@@ -1,3 +1,8 @@
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! Code developed by Rita Margarida Cardoso, contact: rmcardoso@ciencias.ulisboa.pt
+! Minor changes added by Josipa Milovac, contact: milovacj@unican.es
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 module datvar
 !
 integer, parameter :: npft=16,nluse=21
