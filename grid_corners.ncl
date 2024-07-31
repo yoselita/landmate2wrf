@@ -1,3 +1,11 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Contact: Rita Margarida Cardoso <rmcardoso@ciencias.ulisboa.pt>
+;  				 Josipa Milovac <milovacj@unican.es>
+; 
+; the script creates out_grid.nc that describes the WRF grid,
+; and can be used for remapping to the grido:
+; cdo remap${method},out_grid.nc original.nc mapped2wrfgrid.nc
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 load "$NCARG_ROOT/lib/ncarg/nclscripts/esmf/ESMF_regridding.ncl"
 
 begin
