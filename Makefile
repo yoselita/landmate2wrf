@@ -1,11 +1,11 @@
 #Ubuntu Desktop, -g or -O2
-FC = /oceano/gmeteo/users/milovacj/miniconda3/envs/netcdf/bin/gfortran
+FC = gfortran
 FCFLAGS = -O2
 #FCFLAGS += -Wall
 FCFLAGS += -ffree-line-length-none
 FCFLAGS += -Wno-tabs
-FCFLAGS += -I/oceano/gmeteo/users/milovacj/miniconda3/envs/netcdf/include/
-LDFLAGS = -L/oceano/gmeteo/users/milovacj/miniconda3/envs/netcdf/lib -lnetcdff -lnetcdf
+FCFLAGS += -I/home/milovacj/mambaforge/envs/jupyter/include/
+LDFLAGS = -L/home/milovacj/mambaforge/envs/jupyter/lib -lnetcdff -lnetcdf
 
 
 PROGRAMS = WRF_LUCAS_PFTs_v3_water_ice_landmask 
