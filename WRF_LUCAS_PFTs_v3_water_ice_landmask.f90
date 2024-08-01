@@ -252,10 +252,21 @@ PFTw_f=0.
 !  PFTw_f(:,:,:,it)=PFTw(:,:,:,1)
 !enddo
 !
+
+!Fix wetlands
 do it=1,nt
   do iy=1,nlat
-    do ix=1,nlon
-!
+    do ix=1,nlon  
+    	if (PFTw(ix,iy,11,1)>0.)then  
+    		PFTw_f(ix,iy,11,it)=PFTw(ix,iy,11,1)     ! unchanged from WRF    
+     	endif
+   	enddo
+ 	enddo
+enddo
+
+do it=1,nt
+  do iy=1,nlat
+    do ix=1,nlon!
       if(landsea(ix,iy)>0.)then
 !       Forests
         PFTw_f(ix,iy,1,it)=PFTi(ix,iy,5,it)*(1.-water_ice_per(ix,iy,it))
@@ -297,17 +308,6 @@ do it=1,nt
   enddo
 enddo
 !
-!Fix wetlands
-do it=1,nt
-  do iy=1,nlat
-    do ix=1,nlon  
-    	if (PFTw(ix,iy,11,1)>0.)then  
-    		PFTw_f(ix,iy,11,it)=PFTw(ix,iy,11,1)     ! unchanged from WRF    
-     	endif
-   	enddo
- 	enddo
-enddo
-
 
 allocate(var(nlon2,nlat2,nluse))
 var=0.
@@ -332,7 +332,7 @@ do iy=1,nlat2
     if(PFTw(ix,iy,7,1) >0.)then
       var(ix,iy,7)=PFTw(ix,iy,7,1)/(PFTw(ix,iy,6,1)+PFTw(ix,iy,7,1)+PFTw(ix,iy,8,1))
     endif
-    if(PFTw(ix,iy,7,1) >0.)then
+    if(PFTw(ix,iy,8,1) >0.)then
       var(ix,iy,8)=PFTw(ix,iy,8,1)/(PFTw(ix,iy,6,1)+PFTw(ix,iy,7,1)+PFTw(ix,iy,8,1))
     endif
   enddo
@@ -370,32 +370,12 @@ enddo
 do it=1,nt
   do iy=1,nlat
     do ix=1,nlon
-     if(PFTw_f(ix,iy,21,it)>0.)then
-       if (ix>1 .and. PFTw(ix-1,iy,17,1)>0)then
+     if(PFTw_f(ix,iy,21,it)>0.)then           
+       if ( PFTw(ix-1,iy,17,1)>0   .or. PFTw(ix+1,iy,17,1)>0   .or. PFTw(ix,iy-1,17,1)>0   .or. PFTw(ix,iy+1,17,1)>0     .or. &
+            PFTw(ix-1,iy+1,17,1)>0 .or. PFTw(ix-1,iy-1,17,1)>0 .or. PFTw(ix+1,iy-1,17,1)>0 .or. PFTw(ix+1,iy+1,17,1)>0 ) then
          PFTw_f(ix,iy,17,it)=water(ix,iy,it)
          PFTw_f(ix,iy,21,it)=0
-       else if (ix<nlon .and. PFTw(ix+1,iy,17,1)>0)then
-         PFTw_f(ix,iy,17,it)=water(ix,iy,it)
-         PFTw_f(ix,iy,21,it)=0
-       else if (iy>1 .and. PFTw(ix,iy-1,17,1)>0)then
-         PFTw_f(ix,iy,17,it)=water(ix,iy,it)
-         PFTw_f(ix,iy,21,it)=0.
-       else if (ix<nlat .and. PFTw(ix,iy+1,17,1)>0)then
-         PFTw_f(ix,iy,17,it)=water(ix,iy,it)
-         PFTw_f(ix,iy,21,it)=0.
-       else if (ix>1 .and. iy>1 .and. PFTw(ix-1,iy-1,17,1)>0)then
-         PFTw_f(ix,iy,17,it)=water(ix,iy,it)
-         PFTw_f(ix,iy,21,it)=0.
-       else if (ix<nlat .and. iy<nlon .and. PFTw(ix+1,iy+1,17,1)>0)then
-         PFTw_f(ix,iy,17,it)=water(ix,iy,it)
-         PFTw_f(ix,iy,21,it)=0.
-       else if (ix>1 .and. iy<nlon .and. PFTw(ix-1,iy+1,17,1)>0)then
-         PFTw_f(ix,iy,17,it)=water(ix,iy,it)
-         PFTw_f(ix,iy,21,it)=0.
-       else if (ix<nlat .and. iy>1 .and. PFTw(ix+1,iy-1,17,1)>0)then
-         PFTw_f(ix,iy,17,it)=water(ix,iy,it)
-         PFTw_f(ix,iy,21,it)=0.
-       endif
+      endif
      endif
    enddo
  enddo
@@ -423,7 +403,6 @@ do it=1,nt
             else
               PFT_landmask(ix,iy,it)=1
             end if
-
 !          endif
         endif
       enddo
